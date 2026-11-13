@@ -7,7 +7,7 @@ Use the SSH private key provided to log into the next level.
 ## Topics Covered
 
 - [Private SSH key](#1-what-does-it-mean-if-you-have-a-private-ssh-key) → log in without typing a password
-- [`chmod`](#chmod) → change file permissions
+- [chmod](#chmod) → change file permissions
 
 ## Level Goal
 
@@ -44,7 +44,7 @@ So I hope you copied the text that came from the last challenge and saved it. Re
 
 ### Step 2
 
-At first, we copied the private key and saved it on our machine. Our own machine, not the OverTheWire server. If you are on Windows, use Notepad++ so it keeps the text formatting correct and never damages the text.
+At first, we copied the private key and saved it on our machine. Our own machine, not the OverTheWire server. If you are on Windows, use `Notepad++` **not** `Notepad` so it keeps the text formatting correct and never damages the text.
 
 ![The private key opened in the nano editor and saved as bandit.key](../assets/bandit/level13/02-private-key-in-nano.png)
 
@@ -75,17 +75,9 @@ Let's dive deep into the private key and the `chmod` command.
 
 A **private SSH key** is a *secret cryptographic key* that proves **your identity** when connecting to a remote machine over SSH.
 
-Think of it like:
+It's like a **password**, but much stronger, something that should **never be shared**. A key only works if the server has the matching **public key**.
 
-- a **password**, but much stronger
-
-- something that should **never be shared**
-
-- a key that only works if the server has the matching **public key**
-
-If you have a private key file (example: id_rsa or keyfile), it means:
-
-**You are authorized to access a specific SSH account on a remote server**  
+If you have a private key file (example: id_rsa or keyfile), it means: **You are authorized to access a specific SSH account on a remote server**  
 (assuming you also know the correct username).
 
 An example format: ***RSA PRIVATE KEY* (PEM) format.**
@@ -154,11 +146,11 @@ See more about `chmod` below.
 
 The MOST common reason for “invalid format” on Windows:
 
-- ❌ Notepad added hidden characters
+- Notepad added hidden characters
 
-- ❌ File saved as UTF‑16
+- File saved as UTF‑16
 
-- ❌ Windows line endings (CRLF)
+- Windows line endings (CRLF)
 
 To fix this, use **Notepad++**:
 
@@ -168,9 +160,7 @@ To fix this, use **Notepad++**:
 
 3.  Go to **Encoding → UTF‑8**
 
-4.  Save
-
-Then try again.
+4.  Save and then try again.
 
 ### `chmod`
 
@@ -182,22 +172,37 @@ Here is how to read permissions and how to change them:
 
 ### 1) Reading Permission Strings
 
-- ls -l shows a **type** + 9 permission characters: e.g., drwxr-xr-x.
+- ``ls -l`` shows a **type** + 9 permission characters: e.g., `drwxr-xr-x` see the first image at this level.
 
-- The leading letter indicates file type (- file, d directory).
+- The leading letter indicates file type (`-` file, ``d`` directory).
 
-- Then triplets for **user**, **group**, **others** with r (read), w (write), x (execute), or - (no permission).
+- Then triplets for **user**, **group**, **others** with `r` (read), `w` (write), `x` (execute), or `-` (no permission).
 
 - Execute on a **directory** means you can *enter/traverse* it.
 
-### 2) Changing Permissions — chmod
+### 2) Changing Permission (chmod)
 
-- **Symbolic**: target = u (user), g (group), o (others), a (all);
+- **Symbolic**: target `u` (user), `g` (group), `o` (others), `a` (all);
 
-- operation + add, - remove. Examples: chmod u+x file, chmod g-w file, chmod ug+w file.
+- operation `+` add, `-` remove.  
 
-- **Octal**: r=4, w=2, x=1. Combine per class.
+    Examples: 
+    ```bash 
+    chmod u+x file
+    ```
+    ```bash 
+    chmod g-w file
+    ```
+    ```bash
+    chmod ug+w file
+    ```
 
-- Example: chmod 755 file → user rwx, group r-x, others r-x.
+- **Octal**: `r=4`, `w=2`, `x=1`. Combine per class.
 
-- Avoid reckless recursive 777; use least‑privilege.
+- Example: 
+```bash
+chmod 755 file
+```
+**Means:** user `rwx`, group `r-x`, others `r-x`.
+
+- Avoid reckless recursive `777`; use ***least‑privilege***.

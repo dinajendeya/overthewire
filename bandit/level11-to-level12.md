@@ -49,8 +49,6 @@ If we rotate letters by **13 positions**:
 
 - b → o
 
-- c → p
-
 - …
 
 - n → a
@@ -67,19 +65,9 @@ This applies **separately** to:
 
 **Example**
 
-Original text:
+Original text: ``hello``
 
-hello
-
-ROT13 result:
-
-uryyb
-
-Check one letter:
-
-- h → u (13 letters forward)
-
-- e → r
+ROT13 result: ``uryyb``
 
 ### What Is the Caesar Cipher?
 
@@ -111,13 +99,7 @@ Examples:
 
 - Shift 13 → a → n (ROT13)
 
-ROT13 became popular because:
 
-- It is easy
-
-- It hides spoilers
-
-- It avoids accidental reading
 
 ### How Do We Decode ROT13 on Linux?
 
@@ -125,13 +107,7 @@ ROT13 became popular because:
 
 tr stands for **translate**.
 
-What does it do?
 
-- Reads characters from standard input
-
-- Replaces them with other characters
-
-- Outputs the result
 
 ### tr Command Syntax
 
@@ -139,13 +115,9 @@ What does it do?
 tr 'SET1' 'SET2'
 ```
 
-Meaning:
+**Meaning:** Replace every character found in ``SET1`` with the corresponding character in ``SET2``
 
-Replace every character found in SET1 with the corresponding character in SET2
-
-**Important Rule:**
-
-- Both sets **must be the same length**
+**Important Rule:** Both sets **must be the same length**
 
 ### Using tr for ROT13
 
@@ -155,15 +127,11 @@ Replace every character found in SET1 with the corresponding character in SET2
 cat data.txt | tr 'a-zA-Z' 'n-za-mN-ZA-M'
 ```
 
-### Explanation (Step by Step)
+### Explanation
 
-### 1. cat data.txt
+**1. cat data.txt:** Reads the file content
 
-- Reads the file content
-
-### 2. `|`
-
-- Pipe: sends output to another command
+**2. `|` Pipe:** sends output to another command
 
 ### 3. tr 'a-zA-Z' 'n-za-mN-ZA-M'
 

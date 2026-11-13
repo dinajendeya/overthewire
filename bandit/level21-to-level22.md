@@ -48,7 +48,7 @@ Output:
 * * * * * bandit22 /usr/bin/cronjob_bandit22.sh &> /dev/null
 ```
 
-This shows that the script `/usr/bin/cronjob_bandit22.sh` is executed as the bandit22 user every minute. Don't panic again, we will go through each line in detail below.
+This shows that the script `/usr/bin/cronjob_bandit22.sh` is executed as the bandit22 user every minute.
 
 ![Terminal showing the files inside /etc/cron.d and the content of the cronjob_bandit22 file](../assets/bandit/level21/01-cron-directory-and-config.png)
 
@@ -91,13 +91,12 @@ cat /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
 **Cron** is a Linux system that automatically runs scripts or commands at scheduled times (every minute, hourly, daily, etc.).
 It acts like a **timer-based robot** that executes tasks for users in the background without anyone logging in.
 
-The name comes from **"chronos" (time)**.
+>The name comes from **"chronos" (time)**.
 
 **Common real-world uses include:**
 
 - Creating backups
 - Cleaning temporary files
-- Rotating logs
 - Running monitoring scripts
 
 > Note: in Linux it is usually located in the `/etc/cron.d/` directory.
@@ -161,9 +160,7 @@ Example:
 #!/bin/bash
 ```
 
-This line tells the system: "Use the program located at `/bin/bash` to execute this file."
-
-Without it, Linux won't know how to run your script.
+This line tells the system: "Use the program located at `/bin/bash` to execute this file." Without it, Linux won't know how to run your script.
 
 ### 2. Why is it called "shebang"?
 
@@ -178,10 +175,7 @@ It's just a nickname that became common in Unix culture and documentation.
 
 ### 3. Why must the shebang be at the very beginning of the file?
 
-Because the Linux kernel checks the **first two bytes** of a script.
-
-- If the file starts with `#!`, Linux knows it's a script.
-- It then reads the rest of the line to find **which program** should run it.
+Because the Linux kernel checks the **first two bytes** of a script. If the file starts with `#!`, Linux knows it's a script. It then reads the rest of the line to find **which program** should run it.
 
 If the shebang is **not at the first line**, Linux won't detect it and you may get errors like:
 

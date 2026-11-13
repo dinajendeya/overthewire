@@ -75,10 +75,6 @@ A tag is a name that we put on a specific point in the history, usually to mark 
 
 Tags don't appear when we list the branches or read the log of the files, so they are easy to miss.
 
-### `git tag`
-
 `git tag` shows the list of all tags in the repository.
-
-### `git show <tag-name>`
 
 `git show secret` shows what the tag points to. A tag can also have its own message. In this level, the message of the tag is the password.

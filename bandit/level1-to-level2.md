@@ -58,7 +58,7 @@ Flags allow us to:
 
 - Improve precision
 
-Commands themselves are powerful but flags make them flexible and customizable. You can discover manual page or use `-h` or `--help` with the target command to see all available flags and how to use them. Let's take a look at some important `ls` flags:
+Commands themselves are powerful but flags make them even more flexible and customizable. You can discover manual page or use `-h` or `--help` with the target command to see all available flags and how to use them. Let's take a look at some important `ls` flags:
 
 - `ls --help` → display this help and exit
 
@@ -103,6 +103,7 @@ cat ./-file
 Why this works:
 
 `./` makes it clear it's a file in the current directory — NOT a flag.
+and that is what I personaly prefer.
 
 3.  **Use quotes (sometimes)**
 
@@ -110,4 +111,4 @@ Why this works:
 cat "-file"
 ```
 
-But this doesn’t always work if the command aggressively parses flags.
+But this doesn’t always work if the command aggressively parses flags and honstly that didn't work with me either.

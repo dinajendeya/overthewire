@@ -77,25 +77,9 @@ cat /usr/bin/cronjob_bandit24.sh
 
 ![Terminal showing the content of the cronjob_bandit24.sh script](../assets/bandit/level23/02-cronjob-bandit24-script.png)
 
-At first glance this looks intimidating. Let's go line by line.
-
-**Line 1**
-
-```bash
-#!/bin/bash
-```
-
-Run with bash. We discussed that before, see [here](level21-to-level22.md#1-what-is-a-shebang).
-
-**Line 3**
-
-```bash
-myname=$(whoami)
-```
+At first glance this looks intimidating. But let's go line by line.
 
 The script runs as `bandit24`, so `whoami` returns `bandit24`. Therefore `myname="bandit24"`.
-
-**Line 5**
 
 ```bash
 cd /var/spool/$myname/foo
@@ -103,31 +87,18 @@ cd /var/spool/$myname/foo
 
 After replacing the variable it becomes `cd /var/spool/bandit24/foo`. This is an extremely important line. It tells us the script only cares about files inside `/var/spool/bandit24/foo`, so we should think: *can I place a file there?*
 
-**Line 6**
+Then it will echo a message
 
 ```bash
 echo "Executing and deleting all scripts in /var/spool/$myname/foo:"
 ```
 
-Only a message. Nothing important.
-
-**Line 7**
+After that it wil will loop through every file in the folder (`*` for normal files and `.*` for hidden files). The loop will process each one. but not `.` the current directory, or `..` parent directory.
 
 ```bash
 for i in * .*;
-```
-
-This means: loop through every file in the folder (`*` for normal files and `.*` for hidden files). The loop will process each one.
-
-**Line 9**
-
-```bash
 if [ "$i" != "." -a "$i" != ".." ];
 ```
-
-Why? Because `.` means the current directory and `..` means the parent directory. We never want to process those.
-
-**Line 11**
 
 ```bash
 owner="$(stat --format "%U" ./$i)"
@@ -157,7 +128,7 @@ After running, delete the script. This explains the challenge hint: your script 
 
 ### Step 3
 
-Let's think like an attacker. The script is telling us:
+Simply the script is telling us:
 
 ```text
 If a file is owned by bandit23
@@ -166,13 +137,6 @@ Place it in /var/spool/bandit24/foo
     ↓
 I'll execute it as bandit24
 ```
-
-This is exactly what we need. We are logged in as `bandit23`, so any file we create will belong to `bandit23` automatically.
-
-Now we need a script that:
-
-1. Reads the bandit24 password
-2. Saves it somewhere we can access
 
 ### Step 4
 
@@ -199,7 +163,7 @@ Contents:
 cat /etc/bandit_pass/bandit24 > /tmp/ban24pass
 ```
 
-> In my screenshot below I typed the first line as `!#/bin/bash` by mistake. It still worked, but the correct shebang is `#!/bin/bash`.
+> In my screenshot below I typed the first line as `!#/bin/bash` by mistake but the correct shebang is `#!/bin/bash`.
 
 ### Step 5
 
@@ -233,21 +197,20 @@ cat /tmp/ban24pass
 
 ### What happens behind the scenes?
 
-```text
-Cron runs /usr/bin/cronjob_bandit24.sh as bandit24
-    ↓
-Finds our file in /var/spool/bandit24/foo
-    ↓
-Checks the owner → bandit23
-    ↓
-Executes ./pass.sh as bandit24
-    ↓
-Our script reads /etc/bandit_pass/bandit24
-    ↓
-Writes the password into /tmp/ban24pass
-    ↓
+Cron runs `/usr/bin/cronjob_bandit24.sh` as `bandit24`
+    ↓  
+Finds our file in `/var/spool/bandit24/foo`  
+    ↓  
+Checks the owner → `bandit23`  
+    ↓  
+Executes `./pass.sh` as `bandit24`  
+    ↓  
+Our script reads `/etc/bandit_pass/bandit24`  
+    ↓  
+Writes the password into `/tmp/ban24pass`  
+    ↓   
 Deletes the original script
-```
+
 
 ### The commands used in the script
 

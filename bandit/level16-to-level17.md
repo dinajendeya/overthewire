@@ -15,7 +15,7 @@ The credentials for the next level can be retrieved by submitting the password o
 
 ## Commands You May Need
 
-- [ssh](https://manpages.ubuntu.com/manpages/noble/man1/ssh.1.html)
+- [`ssh`](https://manpages.ubuntu.com/manpages/noble/man1/ssh.1.html)
 - `telnet`
 - `nc`
 - `ncat`
@@ -38,18 +38,9 @@ The credentials for the next level can be retrieved by submitting the password o
 
 ### Step 1
 
-**What the Bandit question is asking**
-
 The challenge says:
 
 **Find which port between 31000 and 32000 has a server listening on it.**
-
-This means:
-
-- There are many "doors" (ports).
-- Only some doors have a program behind them.
-- You must check every door from **31000 → 32000**.
-- The correct one will respond and will later be used with SSL.
 
 The easiest way to do this is with **Nmap**. Run this command:
 
@@ -73,7 +64,7 @@ I have already tried them one by one. The only port that seems to have the secur
 
 ![Terminal showing the KEYUPDATE message returned after sending the password](../assets/bandit/level16/03-keyupdate-message.png)
 
-To know more about the KeyUpdate message and how to overcome all possible errors, see the bit of theory below.
+To know more about the KeyUpdate message and how to overcome all possible errors, see the [bit of theory below](#A-Bit-of-Theory).
 
 ### Step 4
 
@@ -92,7 +83,7 @@ openssl s_client -connect localhost:31790 -nocommands
 Nmap = **N**etwork **Map**per  
 It is one of the most powerful tools in cybersecurity.
 
-### ✔ 1. Nmap scans ports
+### 1. Nmap scans ports
 
 Nmap can check whether ports are:
 
@@ -102,51 +93,27 @@ Nmap can check whether ports are:
 
 - **filtered** → blocked by firewall
 
-This is exactly what you’re doing in Bandit.
+### 2. Nmap discovers services
 
-### ✔ 2. Nmap discovers services
-
-Nmap can tell you:
-
-- what application is running
-
-- whether it uses SSL
-
-- what version it is
-
-- what protocol it uses
+Nmap can tell us: what **application** is running, what is its **version** and what **protocol** it uses
 
 Example output:
 
+```
 80/tcp open http
 
 443/tcp open https
 
 22/tcp open ssh
+```
 
-Very useful in ethical hacking.
+### 3. Nmap can detect operating systems
 
-### ✔ 3. Nmap can detect operating systems
+Using special packet signatures, Nmap can guess the running OS even the exact distripution.
 
-Using special packet signatures, Nmap can guess:
+### 4. Nmap can scan networks, not just localhost
 
-- Linux
-
-- Windows
-
-- even the exact distribution
-
-(Not needed in Bandit, but important to know.)
-
-### ✔ 4. Nmap can scan networks, not just localhost
-
-You can use Nmap to scan:
-
-- other devices
-
-- subnets
-
-- entire networks
+like other devices, subnets and entire networks
 
 Example:
 
@@ -156,7 +123,7 @@ nmap 192.168.1.0/24
 
 It will list all active devices.
 
-### ✔ 5. Nmap uses different scanning techniques
+### 5. Nmap uses different scanning techniques
 
 Nmap has multiple scan types:
 
@@ -170,16 +137,6 @@ Nmap has multiple scan types:
 
 - Firewall evasion
 
-You're using a basic TCP scan, which is enough for Bandit.
-
-- ✔ You found 5 open ports — good
-
-- ✔ Now scan only those for SSL
-
-- ✔ Look for the one port that shows SSL/TLS
-
-- ✔ Connect using:
-
 ```bash
 openssl s_client -connect localhost:<ssl_port>
 ```
@@ -190,8 +147,6 @@ openssl s_client -connect localhost:<ssl_port>
 
 **KeyUpdate** is a **TLS 1.3 feature**.  
 It allows either side of a TLS connection (client or server) to **refresh encryption keys during a live session**, *without renegotiating a whole handshake*.
-
-This improves forward secrecy by periodically rotating keys used to encrypt traffic.
 
 From the OpenSSL documentation and StackOverflow explanation I found:
 
@@ -208,11 +163,9 @@ In openssl s_client **interactive mode**, once the TLS connection is established
 OpenSSL defines k and K as:
 
 - **k / K → Send a TLS 1.3 KeyUpdate message**  
-  (instead of sending the text you typed) [\[stackoverflow.com\]](https://stackoverflow.com/questions/58547963/openssl-keyupdate-and-ssl-key-updatewrong-ssl-version)
+  (instead of sending the text we typed) [\[stackoverflow.com\]](https://stackoverflow.com/questions/58547963/openssl-keyupdate-and-ssl-key-updatewrong-ssl-version)
 
-This means:
-
-- ✔ Even if you type a whole password (e.g. kSkvUpMQ7l...),
+Even if you type a whole password (e.g. kSkvUpMQ7l...),
 
 **OpenSSL looks ONLY at the first character.**
 
@@ -226,60 +179,12 @@ If that first character is:
 
 - …and so on.
 
-This behavior is confirmed in analysis of a real case where the string kSkvUp... triggered KEYUPDATE:
+So our password *is* being typed correctly, the **first character** is simply being misinterpreted as an OpenSSL command.
 
-“My arbitrary string was conflicting with the KEYUPDATE Connected Command.” [\[icecandidate.com\]](https://icecandidate.com/posts/openssl_conflicting_commands/)
+We can stop such feature by using `-quiet` or `-nocommands`
 
-So your password *is* being typed correctly, the **first character** is simply being misinterpreted as an OpenSSL command.
+### 3. What ``-quiet`` and ``nocommands` Do
 
-We can stop such feature by using -quiet or -nocommands
+``-quiet``: Disables interactive command letters (like k, R, Q), and turns on `-ign_eof` and `-nocommands` so our input is treated as **raw data**
 
-### ✅ 3. What -quiet Does
-
--quiet:
-
-- ✔ Disables interactive command letters (like k, R, Q)
-
-- ✔ Suppresses session/certificate output
-
-- ✔ Turns on -ign_eof and -nocommands implicitly
-
-Meaning:
-
-- Your input is treated as **raw data**
-
-- No connected commands are processed
-
-- Your password is sent *exactly* as typed
-
-OpenSSL documentation:
-
-“-quiet inhibits printing session info… implicitly turns on -ign_eof and -nocommands.” [\[docs.openssl.org\]](https://docs.openssl.org/master/man1/openssl-s_client/)
-
-This is why Bandit guides tell you to use:
-
-```bash
-openssl s_client -connect localhost:31790 -quiet
-```
-
-So that your password beginning with k won't trigger KeyUpdate. [\[nerdiverset.no\]](https://nerdiverset.no/over-the-wire/bandit/bandit-level-16/)
-
-### ✅ 4. What -nocommands Does
-
--nocommands:
-
-- ✔ Directly disables ALL interactive one-letter commands
-
-This includes k, K, R, Q, etc.
-
-Once -nocommands is set:
-
-- The client will **no longer interpret the first character of your input**
-
-- Everything you type is sent directly to the server
-
-From the explanation of preventing conflicting commands:
-
-“The -nocommands parameter disables interactive command letters. This allows strings to be passed without conflicting.” [\[icecandidate.com\]](https://icecandidate.com/posts/openssl_conflicting_commands/)
-
-Useful alternative to -quiet when you still want normal output.
+`-nocommands`: It also disables ALL interactive one-letter commands directly

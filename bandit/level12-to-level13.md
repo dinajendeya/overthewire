@@ -5,7 +5,7 @@
 ## Topics Covered
 
 - [Hexdump](#1-what-is-a-hexdump) → data written in hexadecimal
-- [`mktemp`](#-what-is-mktemp) → a safe temporary place to work
+- [mktemp](#-what-is-mktemp) → a safe temporary place to work
 - [Compression and archives](#-compress) → `gzip`, `bzip2` and `tar`
 
 ## Level Goal
@@ -129,7 +129,7 @@ See below.
 | Hex bytes  | Actual byte values        |
 | ASCII      | Human‑readable characters |
 
-### ✅ What is mktemp?
+### What is mktemp?
 
 mktemp is a command used in Linux/UNIX systems to **safely create a temporary file or directory**.
 
@@ -141,7 +141,7 @@ It ensures:
 
 - It avoids race conditions (important for security)
 
-### ✅ Why is mktemp used?
+### Why is mktemp used?
 
 Because manually creating a temp file like:
 
@@ -149,17 +149,9 @@ Because manually creating a temp file like:
 touch /tmp/file
 ```
 
-This is dangerous—someone else might already have a file with the same name, which could lead to:
+This is dangerous, someone else might already have a file with the same name, which could lead to:Data loss, Security issues or Unexpected behavior. ``mktemp`` prevents these problems by generating a **unique** name.
 
-- Data loss
-
-- Security issues
-
-- Unexpected behavior
-
-mktemp prevents these problems by generating a **unique** name.
-
-### ✅ Basic Usage
+### Basic Usage
 
 ### 1. Create a temporary file
 
@@ -167,9 +159,7 @@ mktemp prevents these problems by generating a **unique** name.
 mktemp
 ```
 
-Example output:
-
-`/tmp/tmp.abC123xyz`
+Example output: `/tmp/tmp.abC123xyz`
 
 ### 2. Create a temporary directory
 
@@ -177,11 +167,9 @@ Example output:
 mktemp -d
 ```
 
-Example output:
+Example output: `/tmp/tmp.dir123abc`
 
-`/tmp/tmp.dir123abc`
-
-### ✅ How It Works
+### How It Works
 
 mktemp takes a filename **template** and replaces the Xs with random characters.
 
@@ -191,61 +179,27 @@ Example:
 mktemp myfileXXXXXX
 ```
 
-Output:
-
-myfileYhTg9A
+Output: `myfileYhTg9A`
 
 The **six X's** (XXXXXX) are required because that's where randomness goes.
-
-### ✅ Useful Options
-
-### Create temp directory
-
-```bash
-mktemp -d
-```
-
-### Specify directory
-
-```bash
-mktemp -p /myfolder
-```
-
-### Use custom template
-
-```bash
-mktemp /tmp/testfile.XXXXXX
-```
-
-### ✅ Real‑World Uses
-
-1.  Safe temporary files in shell scripts
-
-2.  Storing temporary logs
-
-3.  Processing data before saving
-
-4.  Creating unique working directories
-
-5.  Avoiding security risks
 
 ### 🟦 Compress
 
 To **compress** means to **make a file smaller** by removing redundancy.  
 (Example: file.txt → file.txt.gz but still the *same data*, just smaller.)
 
-### 🟩 Archive
+### Archive
 
 To **archive** means to **combine multiple files into one package** without necessarily shrinking them.  
 (Example: many files → archive.tar.)
 
-**📌 In short:**
+**In short:**
 
 - **Compress = shrink one file**
 
 - **Archive = bundle many files together**
 
-### 🟦 1. GZIP
+### 1. GZIP
 
 **What it is:**
 
@@ -290,13 +244,8 @@ bzip2 compresses single files using the **bzip2 algorithm**, usually giving bett
 
 - **Decompress:** bunzip2 file.bz2
 
-### 🟦 3. TAR
-
-**What it is:**
-
-tar is **not compression** by itself.  
-It creates **archives** (multiple files into one).  
-Then you can compress the archive with gzip/bzip2/xz.
+### 3. TAR
+tar is **not compression** by itself. It creates **archives** (multiple files into one). Then you can compress the archive with gzip/bzip2/xz.
 
 **Common extensions:**
 
@@ -318,34 +267,3 @@ Then you can compress the archive with gzip/bzip2/xz.
 | -j       | Use bzip2                      |
 | -v       | Verbose (show processed files) |
 
-**Most common tar commands:**
-
-### Create a tar.gz archive
-
-```bash
-tar -czf archive.tar.gz folder/
-```
-
-### Extract a tar.gz archive
-
-```bash
-tar -xzf archive.tar.gz
-```
-
-### List contents
-
-```bash
-tar -tzf archive.tar.gz
-```
-
-### Extract a tar.bz2
-
-```bash
-tar -xjf archive.tar.bz2
-```
-
-### List tar.bz2
-
-```bash
-tar -tjf archive.tar.bz2
-```

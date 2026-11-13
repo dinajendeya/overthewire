@@ -7,7 +7,7 @@ Analyze the shell script that cron executes.
 ## Topics Covered
 
 - [Reading a shell script](#step-2) → understand it line by line
-- [Hashing and MD5](#what-is-hashing) → how a file name is made from text
+- [Hashing and MD5](#what-is-hashing) → What does Hash actually mean
 
 ## Level Goal
 
@@ -25,7 +25,7 @@ A program is running automatically at regular intervals from **cron**, the time-
 
 ## Solution
 
-This level is a little trickier than the previous one. In Level 21 → Level 22, the script directly showed us the filename where the password was stored. Now the script **computes the filename dynamically using MD5**, so the challenge is:
+This level is a little trickier than the previous one. In [Level 21 → Level 22](./level21-to-level22.md), the script directly showed us the filename where the password was stored. Now the script **computes the filename dynamically using MD5**, so the challenge is:
 
 *Can we understand the code well enough to predict where the password gets written?*
 
@@ -67,21 +67,13 @@ echo "Copying passwordfile /etc/bandit_pass/$myname to /tmp/$mytarget"
 cat /etc/bandit_pass/$myname > /tmp/$mytarget
 ```
 
-Let's break down every line.
+Let's break down it.
 
-**Line 1**
+the script should be executed using Bash.
 
-`#!/bin/bash` → the script should be executed using Bash.
+Then the command `whoami` returns the current user. For example, `bandit22` if you run it.
 
-**Line 2**
-
-```bash
-myname=$(whoami)
-```
-
-The command `whoami` returns the current user. For example, `bandit22` if you run it.
-
-But remember, the cron job is NOT running as bandit22. It's running as `bandit23`, because the cron entry says:
+>But remember, the cron job is NOT running as bandit22. It's running as `bandit23`, because the cron entry says:
 
 ```text
 * * * * * bandit23 ...
@@ -89,13 +81,9 @@ But remember, the cron job is NOT running as bandit22. It's running as `bandit23
 
 Therefore `whoami` inside the script becomes `bandit23`, so `myname="bandit23"`.
 
-**Line 3**
-
 ```bash
 mytarget=$(echo I am user $myname | md5sum | cut -d ' ' -f 1)
 ```
-
-This is the most important line. Let's simplify it.
 
 Since the `$myname` variable contains `bandit23`, the command becomes `echo I am user bandit23`, and the output is `I am user bandit23`.
 
@@ -129,9 +117,7 @@ Output:
 
 So `mytarget="8ca319486bfbbc3663ea0fbe81326349"`.
 
-**Why is this done?** They create a "secret-looking" filename, `/tmp/8ca319486bfbbc3663ea0fbe81326349`, to store the password.
-
-**Line 4**
+IN simple words They create a "secret-looking" filename, `/tmp/8ca319486bfbbc3663ea0fbe81326349`, to store the password.
 
 ```bash
 echo "Copying passwordfile /etc/bandit_pass/$myname to /tmp/$mytarget"
@@ -143,7 +129,7 @@ This only prints a status message. When executed as bandit23:
 Copying passwordfile /etc/bandit_pass/bandit23 to /tmp/8ca319486bfbbc3663ea0fbe81326349
 ```
 
-**Line 5**
+The last line
 
 ```bash
 cat /etc/bandit_pass/$myname > /tmp/$mytarget
@@ -197,17 +183,14 @@ Because we executed it as bandit22. The script uses `whoami`, which returned `ba
 
 That's why running the script manually is useful for understanding the logic, but **not** for getting the next password. The cron job executes as `bandit23`, so inside it `whoami` = `bandit23`.
 
-This level teaches a very important skill: don't just read code. Execute it in your mind by replacing the variables and evaluating the commands step by step until you understand exactly what happens.
-
 ## A Bit of Theory
 
 ### What is hashing?
 
 A hash function takes any text (or file) and turns it into a fixed-length string of characters, which is called the **hash**.
 
-- The same input always gives the same hash.
-- A small change in the input gives a completely different hash.
-- You can't turn the hash back into the original text.
+>The same input always gives the same hash.
+A small change in the input gives a completely different hash. Also you can't turn the hash back into the original text.
 
 ### What is MD5?
 
@@ -223,10 +206,7 @@ Output:
 b1946ac92492d2347c6235b4d2611184  -
 ```
 
+To remember how the pipe `|` works, see [Level 8 → Level 9](level8-to-level9.md).
+
 > MD5 is old and it is not safe to protect passwords today. In this level it is only used to make a file name.
 
-### Why does this level use MD5?
-
-The script uses MD5 to make a file name from the sentence `I am user bandit23`. The name looks random, but we can calculate it ourselves, because the same sentence always gives the same hash.
-
-To remember how the pipe `|` works, see [Level 8 → Level 9](level8-to-level9.md).

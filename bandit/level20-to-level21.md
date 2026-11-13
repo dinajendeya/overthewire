@@ -23,68 +23,42 @@ There is a setuid binary in the home directory that does the following: it makes
 - `tmux`
 - Unix 'job control' (`bg`, `fg`, `jobs`, `&`, `CTRL-Z`, …)
 
-## Important Notes
-
-> **NOTE:** Try connecting to your own network daemon to see if it works as you think
-
 ## Solution
 
 ### Step 1
 
 **What we have**
 
-Inside your home directory we have a binary file called:
-
-```bash
+Inside the home directory we have a binary file called:
+``
 ./suconnect
-```
-
-This binary has **setuid permissions**, meaning:
-
-- When YOU (bandit20) run it
-- It actually runs as **bandit21**
-
-So it has permission to read:
-
+`` if we look closely we found that this binary has **setuid permissions**, meaning: When we as `bandit20` run it, it actually runs as **bandit21**, so it has permission to read:
 ```bash
 /etc/bandit_pass/bandit21
 ```
 
-Just similar to the previous challenge. But the binary will **only reveal** that password if you prove you know the **bandit20** password.
+Just similar to the [previous challenge](./level19-to-level20.md). But the binary will **only reveal** that password if we prove that we know the **bandit20** password.
 
 ![Terminal showing ls -l with the setuid binary suconnect and its usage message](../assets/bandit/level20/01-suconnect-usage.png)
 
 ### Step 2
 
-**What the binary does (step by step)**
+**What the binary does**
 
-When you run:
+When we run:
+``./suconnect <portnumber>`` it will conncts to **localhost** on the **port** number we gave it. Then it will read the text we sent to it to test weather it is really the `bandit20` password or not. If it is the correct password so it will print the password for the next level.
 
-```bash
-./suconnect <portnumber>
-```
+>The binary is acting like a **client**. we must act like a **server**.
 
-It:
+**That is being said that we need to:**
 
-1. Connects to **localhost** (127.0.0.1 → your own machine)
-2. Connects to the **port number you give it**
-3. Reads **one line** of text from that connection
-4. Compares what you sent to **the bandit20 password**
-5. If your line is correct → it prints the **bandit21 password**
-
-That's its entire behavior.
-
-The binary is acting like a **client**. You must act like a **server**.
-
-**✅ That is why we need to:**
-
-1. Create a small "server" on your machine
+1. Create a small "server" on our machine
 2. Make that server send the **bandit20 password** to any client connecting
-3. Run the setuid binary so it connects to your server
-4. Your server sends the password
+3. Run the setuid binary so it connects to our server
+4. Our server sends the password
 5. The binary checks it and returns the **bandit21 password**
 
-Let's do all this (step by step). First, you need **two SSH sessions** open as bandit20. One acts as the server, the other runs the binary.
+Let's do all this. First, we need **two SSH sessions** open as bandit20. One acts as the server, the other runs the binary.
 
 ### Step 3
 
@@ -103,7 +77,7 @@ Meaning:
 - `-v` → verbose
 - `-p 4444` → port number 4444
 
-Your terminal is now waiting for someone to connect.
+Our terminal is now waiting for someone to connect.
 
 ![Terminal showing nc listening on port 4444, receiving the connection and the password being sent](../assets/bandit/level20/02-nc-listener-sending-password.png)
 
@@ -117,10 +91,7 @@ Open **Terminal 2**, log in again as bandit20, and run:
 ./suconnect 4444
 ```
 
-This makes the binary:
-
-✅ Connect to localhost:4444  
-✅ Expect you to send a line containing the bandit20 password
+This will do the job we explained above:
 
 ![Terminal showing suconnect connecting to port 4444 and reporting that the password matches](../assets/bandit/level20/03-suconnect-password-matches.png)
 
@@ -132,19 +103,10 @@ In **Terminal 1** (where netcat is running):
 
 As soon as the binary connects, you will see a connection message.
 
-Now paste the **bandit20 password** (the one you used to log into this level), then press **ENTER**.
-
-Netcat sends that line to the binary.
+Now paste the **bandit20 password**. Netcat will send that line to the binary.
 
 ### Step 6
 
 **Get the bandit21 password**
 
-Go back to **Terminal 2**.
-
-If you sent the correct password:
-
-✅ The binary prints the **bandit21 password**  
-✅ You are ready for the next level
-
-Done!
+Go back to **Terminal 2**. If you sent the correct password so the binary prints the **bandit21 password**  

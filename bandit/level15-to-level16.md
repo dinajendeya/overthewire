@@ -7,7 +7,7 @@ Submit the password to port 30001 using SSL/TLS encryption.
 ## Topics Covered
 
 - [SSL/TLS](#2-what-is-ssltls) → encrypted connections
-- [`openssl s_client`](#1-what-does-using-ssltls-mean-in-this-level) → connect to a port with encryption
+- [openssl s_client](#1-what-does-using-ssltls-mean-in-this-level) → connect to a port with encryption
 
 ## Level Goal
 
@@ -61,29 +61,15 @@ Let's dive deep into the new concepts: secure connection SSL/TLS, and the renego
 
 ### 1. What does “using SSL/TLS” mean in this level?
 
-The challenge says:
-
-**“Submit the password to port 30001 on localhost using SSL/TLS encryption.”**
-
-This means:
-
-- **The service on port 30001 does NOT accept normal unencrypted text**
-
-- **It only accepts communication over an encrypted tunnel**
-
-- **That encryption must be SSL/TLS**
-
-So instead of using normal nc, you must use a command that speaks SSL/TLS.
-
-Bandit typically expects:
-
 ```bash
 openssl s_client -connect localhost:30001
 ```
 
-This opens an encrypted connection.
+This means: **The service on port 30001 does NOT accept normal unencrypted text It only accepts communication over an encrypted tunnel**
 
-Then you paste the password just like before.
+So instead of using normal nc, you must use a command that speaks SSL/TLS.
+
+
 
 ### 2. What is SSL/TLS?
 
@@ -95,33 +81,15 @@ SSL (Secure Sockets Layer) and TLS (Transport Layer Security) are security proto
 
 - **Protect against spying, tampering, or impersonation**
 
-TLS is the modern version, SSL is older.
+> ***Note:*** TLS is the modern version, SSL is older.
 
-Whenever you see:
-
-- 🔒 HTTPS websites
-
-- Secure email
-
-- VPN tunnels
-
-- Encrypted chat
-
-- Encrypted APIs
-
-That’s **TLS** running underneath.
+Whenever you see: 🔒 HTTPS websites, Secure email, VPN tunnels, Encrypted chat, Encrypted APIs. That’s **TLS** running underneath.
 
 ### 3. Why encryption? What problem does it solve?
 
-Without SSL/TLS:
+Without SSL/TLS: anyone on the network can **read your data**, **modify it** and **pretend to be the server**
 
-- Anyone on the network can **read your data**
-
-- Anyone can **modify your data**
-
-- Anyone can **pretend to be the server**
-
-This is called:
+In cybersecurity we called that:
 
 - eavesdropping (sniffing)
 
@@ -184,10 +152,7 @@ Everything that happens now is encrypted.
 ### Step 3: You send the password (securely)
 
 The text you type:
-
-\<your_password\>
-
-Is encrypted, sent to the server, decrypted there, and processed.
+\<your_password\> Is encrypted, sent to the server, decrypted there, and processed.
 
 ### Step 4: Server sends back encrypted response
 

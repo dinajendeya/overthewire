@@ -47,18 +47,6 @@ Now, let's see what it means at first and how to send the password to port 30000
 
 **What does "submit the password" mean?**
 
-When Bandit says:
-
-**"Submit the password of the current level to port 30000 on localhost."**
-
-It means:
-
-**👉 You must send (type or echo) the current password**
-
-**👉 to a small program running on port 30000**
-
-**👉 on the same machine you are logged into (localhost)**
-
 Think of it like sending a message to another program:
 
 - The password = the message
@@ -79,7 +67,7 @@ See more in the theory below.
 
 ## A Bit of Theory
 
-### 🟦 What is the port 30000 and what is its role?
+### What is the port and what is its role?
 
 Think of a computer like a big building.
 
@@ -89,25 +77,9 @@ Think of a computer like a big building.
 
 - Some rooms have programs waiting to talk to you.
 
-So when Bandit says:
-
-**Submit the password to port 30000**
-
-It means:
-
-**On the machine you are logged into (bandit14 server),**
-
-- there is a program listening on port **30000**
-
-- It's waiting for you to send it **your current password**.
-
-- This program checks if the password is correct.
-
-- If yes, it sends you the **next level password**.
-
 So **port 30000 = a special service that gives you the next password if you talk to it correctly**.
 
-### 🟩 What is nc (Netcat)?
+### What is nc (Netcat)?
 
 nc is short for **Netcat**, aka the “Swiss‑army knife of networking”.
 
@@ -129,31 +101,14 @@ It can:
 
 - Listen for connections
 
-But in Bandit, you use it for one basic thing:
+Here we use it for one basic thing: **Connect to a program on a port and talk to it.**
 
-**Connect to a program on a port and talk to it.**
-
-### 🟧 How does nc actually work? (Deeper explanation)
-
+### How does nc actually work? 
 When you run:
 
 ```bash
 nc localhost 30000
 ```
-
-Here’s what happens internally:
-
-1.  **nc creates a TCP connection**  
-    It says “Hello, port 30000, can I connect?”  
-    If the port is open and a program is listening → connection accepted.
-
-2.  **nc attaches your keyboard to that connection**  
-    Anything you type is sent over the connection.
-
-3.  **nc attaches your screen to the connection**  
-    Anything the remote program sends back is printed on your terminal.
-
-So effectively:
 
 **nc = a direct pipe between *you* and *the program on port 30000***
 

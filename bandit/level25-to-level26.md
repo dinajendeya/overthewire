@@ -75,7 +75,11 @@ What happened? Because bandit26's shell is `showtext`, it runs `more` on `text.t
 
 The trick is to make the terminal window **very small** (just a few lines high) before we log in. Now `more` can't show the whole text, so it stops and waits for us with a `--More--` line at the bottom. This is the interactive mode of `more`.
 
-Let's log in again with the same ssh command. When the `--More--` line appears, press `v` to open the file in the editor (vim).
+**There is two way actually to navigate this level**  
+
+1. The first one which I prefer is just to maximize the font size of the terminal and minimize the screen size so the  more word itself couldn't fit to the screen so it allows us to be in this interactive mode.
+
+2. The second on is when the `--More--` line appears, press `v` to open the file in the editor (vim).
 
 ![Terminal showing the More prompt at 33 percent, where pressing v opens the editor](../assets/bandit/level25/04-more-prompt-press-v.png)
 

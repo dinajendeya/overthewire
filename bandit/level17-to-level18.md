@@ -17,7 +17,7 @@ There are 2 files in the home directory: **passwords.old and passwords.new**. Th
 - [cat](https://manpages.ubuntu.com/manpages/noble/man1/cat.1.html)
 - [grep](https://manpages.ubuntu.com/manpages/noble/man1/grep.1.html)
 - [ls](https://manpages.ubuntu.com/manpages/noble/man1/ls.1.html)
-- `diff`
+- [diff](#a-bit-of-theory)
 
 ## Important Notes
 
@@ -39,27 +39,21 @@ To gain more insights about the `diff` tool, see [below](#a-bit-of-theory).
 
 ## A Bit of Theory
 
-One of the most useful commands you'll learn is **diff**.
+One of the most useful commands you'll learn is **diff**. It stands for **difference**. Its job is simple:
 
-The name **diff** stands for **difference**. Its job is simple:
-
-Compare two files and show what is different between them
-
-- diff compares two files line by line.
-
-- It is used to find additions, deletions, and modifications.
+Compare two files and show what is different between them wether additions, deletions, or modifications.
 
 **Common symbols:**
 
-\<  = first file
+`<` first file
 
-\>  = second file
+`>` second file
 
-c  = changed
+`c` changed
 
-a  = added
+`a` added
 
-d  = deleted
+`d` deleted
 
 **Most common usage:**
 
@@ -67,9 +61,7 @@ d  = deleted
 diff file1 file2
 ```
 
-### Bandit Challenge Example
-
-Suppose:
+### Example
 
 **passwords.old**
 
@@ -95,6 +87,7 @@ diff passwords.old passwords.new
 
 Output:
 
+```bash
 2c2
 
 \< test456
@@ -102,13 +95,6 @@ Output:
 ---
 
 \> newPassword
+```
 
-The password is:
-
-newPassword
-
-because it comes from:
-
-passwords.new
-
-And is shown with the \> symbol.
+The password is: `newPassword` because it comes from: `passwords.new` and is shown with the `>` symbol.

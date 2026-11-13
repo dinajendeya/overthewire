@@ -80,20 +80,6 @@ Hidden files:
 
 - can be opened by any user with read permission
 
-### So why we use them?
-
-Hidden files are commonly used for:
-
-- configuration
-
-- settings
-
-- user preferences
-
-- storing private keys
-
-- storing shell configs
-
 > We use hidden files to organize and avoid clutter the directory, not for security reasons.
 
 ### How to determine a path of a file/dir. Use pwd command
@@ -102,7 +88,7 @@ The location of any file or directory is described by its path.
 
 A path is a sequence of directories that leads from a starting point to a specific destination.
 
-When navigating through the filesystem, it is essential to know your current working directory. The easiest way to know where you are is by using `` pwd `` command short for: print working directory. It aims to print the absolute path starting from the root `` / ``
+When navigating through the filesystem, it is essential to know that your current working directory. The easiest way to know where you are is by using `` pwd `` command short for: print working directory. It aims to print the absolute path starting from the root `` / ``
 
 ### How to navigate through the file system. Use cd command
 

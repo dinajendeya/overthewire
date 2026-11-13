@@ -40,39 +40,28 @@ ssh bandit18@bandit.labs.overthewire.org -p 2220 cat readme
 
 ## A Bit of Theory
 
-.bashrc is a script that runs **every time** you open a shell session (like when you log in with SSH).  
-In this bandit level, someone modified it so that as soon as you log in, the script forces a logout.  
-So you never get a chance to type commands.
+``.bashrc`` is a script that runs **every time** we open a shell session (like when we log in with ``SSH``).  
+In this bandit level, someone modified it so that as soon as we log in, the script forces a logout.  
+So we never get a chance to type commands.
 
 This is intentional for the challenge.
 
-### What should you do?
+### So what should I do?
 
-You must avoid getting an **interactive shell**.
+We must avoid getting an **interactive shell**.
 
-SSH allows you to run **a single command directly**, without launching an interactive terminal.  
-This bypasses .bashrc.
+``SSH`` allows us to run **a single command directly**, without launching an interactive terminal. This bypasses `.bashrc`.
 
 **The solution:**
 
-Instead of logging in normally, run:
+Instead of logging in normally, we run:
 
 ```bash
 ssh bandit18@bandit.labs.overthewire.org -p 2220 cat readme
 ```
 
-This tells SSH:
+This tells `SSH`: “Connect as bandit18, but instead of giving me a shell, just run cat readme.”
 
-“Connect as bandit18, but instead of giving me a shell, just run cat readme.”
-
-Since .bashrc only triggers **when an interactive shell starts**, it **won’t run**.
+>Since `.bashrc` only triggers **when an interactive shell starts**, it **won’t run**.
 
 **The output will be the password for bandit19.**
-
-### Why this works
-
-- .bashrc only runs for **interactive shells**.
-
-- Running SSH with a command (ssh user@host command) skips the interactive shell.
-
-- Therefore .bashrc never executes → you stay logged in long enough to run the command.

@@ -131,11 +131,7 @@ find . -name "*.log"
 
 ### C. Search by Size
 
-Very important for Bandit.
-
-Examples:
-
-**Exact size in bytes:**
+Examples: **Exact size in bytes:**
 
 ```bash
 find . -size 1033c
@@ -164,7 +160,6 @@ find . -size -10k
 ### D. Search by Permissions
 
 Examples:
-
 **Find files that are not executable:**
 
 ```bash
@@ -216,18 +211,11 @@ You can combine multiple requirements using **AND** (default), **OR**, and **NOT
 find . -type f -size 1033c ! -executable
 ```
 
-This is EXACTLY what Bandit Level 5 requires.
-
-
-**NOT:**
-
-```bash
-find . ! -name "*.txt"
-```
+This is EXACTLY what we need here.
 
 ### 3. ACTIONS: What Should Happen When a File Is Found?
 
-### 📌 ``-print`` (default)
+### ``-print`` (default)
 
 Show the file path.
 
@@ -235,9 +223,7 @@ Show the file path.
 find . -name "*.txt" -print
 ```
 
-### 📌 ``-exec`` Execute a command on each matched file
-
-Syntax:
+### ``-exec`` Execute a command on each matched file
 
 ```bash
 find . -type f -exec COMMAND {} \;
@@ -247,18 +233,6 @@ Example: delete all ``.tmp`` files
 
 ```bash
 find . -name "*.tmp" -exec rm {} \;
-```
-
-Example: show the content of each file
-
-```bash
-find . -type f -exec cat {} \;
-```
-
-### 📌 ``-delete`` Delete found files (BE CAREFUL)
-
-```bash
-find . -name "*.bak" -delete
 ```
 
 From discussing `find`, we can see it is the best tool to filter files and directories when manual search is impossible.

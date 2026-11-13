@@ -5,7 +5,7 @@
 ## Topics Covered
 
 - [Base64](#what-base64-encoded-means) → a way to write data as text
-- [Encoding vs encryption](#what-is-the-difference-between-encoding-and-encryption) → they are not the same thing
+- [Encoding vs Encryption](#what-is-the-difference-between-encoding-and-encryption) → they are not the same thing
 
 ## Level Goal
 
@@ -39,18 +39,9 @@ base64 -d data.txt
 
 ### What Does “Encode” Mean beforehand?
 
-**Encoding** is the process of converting data from one format to another so it can be:
+**Encoding** is the process of converting data from one format to another.
 
-- stored safely
-
-- transmitted reliably
-
-- handled by systems that expect text, not binary
-
-- displayed correctly
-
-**Purpose:**  
-👉 Encoding makes data *compatible*, *not secure*.
+**Purpose:**  Encoding makes data *compatible*, *not secure*.
 
 **Examples of encoding:**
 
@@ -66,8 +57,7 @@ Encoding is always **reversible** and requires **no secret key**.
 
 **Encryption** transforms data into a scrambled form that **cannot be understood without the correct secret key**.
 
-**Purpose:**  
-Encryption protects data from unauthorized access.
+**Purpose:**  Encryption protects data from unauthorized access.
 
 Examples of encryption:
 
@@ -89,55 +79,37 @@ Encryption is designed so that:
 
 **Example to Make It Clear**
 
-**Original text:**
+**Original text:** ``Hello``
 
-Hello
+**Base64 encoded:** ``SGVsbG8=``
 
-**Base64 encoded:**
+>Anyone can decode this. No protection.
 
-SGVsbG8=
+**AES‑Encrypted text:** ``7f91b91c3e64a6e09b58b3f2...``
 
-Anyone can decode this. No protection.
-
-**AES‑Encrypted text:**
-
-7f91b91c3e64a6e09b58b3f2...
-
-No one can understand this without the encryption key.
+>No one can understand this without the encryption key.
 
 ### What Is the difference between Encoding and Encryption?
 
-**Encoding makes data compatible.**
+***Encoding makes data compatible.***
 
-**Encryption makes data secure.**
+***Encryption makes data secure.***
+> We will talk more about encryption in upcomming levels.
+
 
 ### What “Base64 encoded” Means
 
-**Base64 encoding** is a method of converting any kind of binary data (images, files, bytes, special characters) into a **text‑only representation** using 64 safe, printable ASCII characters:
+**Base64 encoding** is a method of converting any kind of binary data (images, files, bytes, special characters) into a **text‑only representation** using 64 safe, printable ASCII characters: ``A–Z a–z 0–9 + /``
 
-A–Z a–z 0–9 + /
+Plus the ``=`` character as padding.
 
-Plus the = character as padding.
-
-Base64 is **not encryption**.  
-It does **not** provide security.  
-It only **translates** data into a text format.
-
-It is a **binary‑to‑text encoding**.
+> ``Base64`` is **not encryption**. It does **not** provide security. It only **translates** data into a text format. It is a **binary‑to‑text encoding**.
 
 ### So Why Base64 Exists and why do we need it (especially in Linux)
 
-Linux systems — especially command‑line tools, logs, configuration files, scripts, and network protocols — often expect **text‑safe data**.
+Linux systems, especially command‑line tools, logs, configuration files, scripts, and network protocols, often expect **text‑safe data**.
 
-But binary data:
-
-- may contain NULL bytes (\x00)
-
-- can break shells or scripts
-
-- may not survive transport over protocols that expect ASCII
-
-- can get corrupted if passed through email, JSON, YAML, or URLs
+But binary data: may contain NULL bytes (\x00) and can break shells or scripts
 
 Base64 solves this by transforming binary data into plain text that will not break systems.
 
@@ -196,30 +168,6 @@ echo -n "Hello Linux" | base64
 echo -n "SGVsbG8gTGludXg=" | base64 -d
 ```
 
-### ❗Important Notes
-
-### Base64 is not encryption
-
-Anyone can decode it easily.
-
 ### Base64 increases size
 
 Data grows by **33%** (roughly 4 bytes output for every 3 bytes input).
-
-### Base64 ensures safe transmission
-
-It guarantees that binary data won’t break across systems expecting text.
-
-### Summary
-
-- Base64 encodes binary data into safe, printable text.
-
-- It is widely used in Linux for scripting, networking, APIs, certificates, and files.
-
-- It does **not** secure the data—just transforms it.
-
-- Linux provides a built-in base64 command for encoding/decoding.
-
-**Encoding makes data compatible.**
-
-**Encryption makes data secure.**

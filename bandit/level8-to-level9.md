@@ -84,10 +84,10 @@ grape
 
 ### Why sort first?
 
-⚠️ Because uniq *only works on adjacent (next to each other) duplicate lines*.  
+Because uniq *only works on adjacent (next to each other) duplicate lines*.  
 So duplicates **must** be next to each other → sorting makes this happen.
 
-### 🟦 2. Understanding the pipe |
+### 2. Understanding the pipe |
 
 One of the most interesting concepts in Linux. The pipe takes the **output of the first command** and sends it as the **input of the next**, allowing you to apply multiple tasks at one time.
 
@@ -97,7 +97,7 @@ Visually:
 
 No temporary files needed.
 
-### 🟦 3. Understanding uniq -u
+### 3. Understanding uniq -u
 
 uniq means:
 
